@@ -185,6 +185,12 @@ document.addEventListener("DOMContentLoaded", () => {
             else if (fVal > 5) { fEl.value = 5; showToast('⚠️ 闪算显示时间不能超过 5秒'); }
         });
     }
+
+    // 智能检测：如果是电脑端（屏幕宽），则移除 readonly 允许电脑键盘直接输入
+    const inputEl = document.getElementById('user-answer');
+    if (inputEl && window.innerWidth >= 768) {
+        inputEl.removeAttribute('readonly');
+    }
 });
 
 function getValidatedValue(id, min) {
@@ -240,15 +246,29 @@ function startMulDivGame() {
     gameState.timeSpent = 0; 
 
     for (let i = 0; i < total; i++) {
-        let n1 = generateRandomNumber(digits1);
-        let n2 = generateRandomNumber(digits2);
-        
         if (gameState.mode === 'mul') {
+            let n1 = generateRandomNumber(digits1);
+            let n2 = generateRandomNumber(digits2);
             gameState.questions.push({ text: `${n1} × ${n2}`, type: 'mul', answer: n1 * n2, userAns: null });
         } else {
-            if (n2 === 1) n2 = 2;
-            let dividend = n1 * n2;
-            gameState.questions.push({ text: `${dividend} ÷ ${n2}`, type: 'div', answer: n1, userAns: null });
+            // 完美修正除法生成逻辑：严格确保被除数是 digits1 位，除数是 digits2 位，且能整除
+            let dividend = generateRandomNumber(digits1);
+            let divisor = generateRandomNumber(digits2);
+            if (divisor === 1 && digits2 === 1) divisor = 2; // 防止除以 1 没挑战性
+
+            // 通过商去反推一个完美的、符合位数的被除数
+            let quotient = Math.round(dividend / divisor);
+            let finalDividend = quotient * divisor;
+
+            // 边界预防：确保反推出来的被除数位数没有溢出或变少
+            const minDiv = Math.pow(10, digits1 - 1);
+            const maxDiv = Math.pow(10, digits1) - 1;
+            if (finalDividend < minDiv || finalDividend > maxDiv) {
+                i--; // 如果运不佳超出了位数，重新生成当前这题
+                continue;
+            }
+
+            gameState.questions.push({ text: `${finalDividend} ÷ ${divisor}`, type: 'div', answer: quotient, userAns: null });
         }
     }
 
@@ -336,6 +356,7 @@ function startRunningTimeTracker() {
     }, 1000);
 }
 
+// 修改参数名，避免与全局变量 timer 混淆
 function startGlobalTimer(timeoutCallback) {
     updateTimerUI();
     gameState.timer = setInterval(() => {
@@ -485,13 +506,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let currentVal = inputEl.value;
 
         if (val === 'backspace') {
-            // 退格键
             inputEl.value = currentVal.slice(0, -1);
         } else if (val === 'clear') {
-            // 清空键
             inputEl.value = '';
         } else {
-            // 纯数字追加
             inputEl.value = currentVal + val;
         }
         
