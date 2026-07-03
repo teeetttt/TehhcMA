@@ -10,18 +10,6 @@ let musicStarted = false;
 (function injectVolumeStyle() {
     const style = document.createElement('style');
     style.innerHTML = `
-        #volume-controller {
-            position: fixed; top: 20px; left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 20px; border-radius: 14px;
-            box-shadow: 0 6px 20px rgba(118, 160, 132, 0.2);
-            border: 1px solid #76a084; z-index: 999;
-            font-size: 1.1rem; color: #3b4840; font-weight: bold;
-        }
-        .vol-row { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .vol-row:last-child { margin-bottom: 0; }
-        #bgm-volume { width: 130px; height: 8px; accent-color: #76a084; cursor: pointer; }
-        
         .toast-alert {
             position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -186,9 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 智能检测：如果是电脑端（屏幕宽），则移除 readonly 允许电脑键盘直接输入
+    // 智能动态路由：当检测为宽屏桌面设备时，剔除 input 的 readonly 蒙层允许实体物理键盘输入
     const inputEl = document.getElementById('user-answer');
-    if (inputEl && window.innerWidth >= 768) {
+    if (inputEl && window.innerWidth > 768) {
         inputEl.removeAttribute('readonly');
     }
 });
@@ -251,20 +239,17 @@ function startMulDivGame() {
             let n2 = generateRandomNumber(digits2);
             gameState.questions.push({ text: `${n1} × ${n2}`, type: 'mul', answer: n1 * n2, userAns: null });
         } else {
-            // 完美修正除法生成逻辑：严格确保被除数是 digits1 位，除数是 digits2 位，且能整除
             let dividend = generateRandomNumber(digits1);
             let divisor = generateRandomNumber(digits2);
-            if (divisor === 1 && digits2 === 1) divisor = 2; // 防止除以 1 没挑战性
+            if (divisor === 1 && digits2 === 1) divisor = 2; 
 
-            // 通过商去反推一个完美的、符合位数的被除数
             let quotient = Math.round(dividend / divisor);
             let finalDividend = quotient * divisor;
 
-            // 边界预防：确保反推出来的被除数位数没有溢出或变少
             const minDiv = Math.pow(10, digits1 - 1);
             const maxDiv = Math.pow(10, digits1) - 1;
             if (finalDividend < minDiv || finalDividend > maxDiv) {
-                i--; // 如果运不佳超出了位数，重新生成当前这题
+                i--; 
                 continue;
             }
 
@@ -356,7 +341,6 @@ function startRunningTimeTracker() {
     }, 1000);
 }
 
-// 修改参数名，避免与全局变量 timer 混淆
 function startGlobalTimer(timeoutCallback) {
     updateTimerUI();
     gameState.timer = setInterval(() => {
@@ -491,7 +475,7 @@ function finishCorrection() {
     });
 }
 
-// ================= 追加：屏幕数字键盘控制逻辑（无负号版） =================
+// ================= 追加：屏幕数字键盘控制逻辑（包含中间 Enter 拦截） =================
 document.addEventListener("DOMContentLoaded", () => {
     const inputEl = document.getElementById('user-answer');
     const keyboard = document.getElementById('screen-keyboard');
@@ -509,6 +493,9 @@ document.addEventListener("DOMContentLoaded", () => {
             inputEl.value = currentVal.slice(0, -1);
         } else if (val === 'clear') {
             inputEl.value = '';
+        } else if (val === 'enter') {
+            // 完美执行既有的全套答题提交验证机制
+            submitAnswer();
         } else {
             inputEl.value = currentVal + val;
         }

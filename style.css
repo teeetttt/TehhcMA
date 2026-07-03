@@ -24,203 +24,216 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 10px;
 }
 
 /* 核心容器 */
 .container {
     width: 100%;
     max-width: 550px;
-    padding: 20px;
+    padding: 10px;
 }
 
 .card {
     background: var(--card-bg);
     border-radius: 20px;
-    padding: 40px 30px;
-    box-shadow: 0 10px 30px rgba(118, 160, 132, 0.15);
-    border: 1px solid var(--light-green);
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 30px 20px;
+    box-shadow: 0 10px 30px rgba(118, 160, 132, 0.06);
+    width: 100%;
+    transition: all 0.3s ease;
 }
 
-/* 屏幕切换逻辑 */
+/* 屏幕管理 */
 .screen {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
+    animation: fadeIn 0.4s ease forwards;
 }
-
 .hidden {
     display: none !important;
 }
 
-/* 标题样式 */
+/* 菜单/配置界面样式 */
 .title {
     font-size: 2.2rem;
     color: var(--primary-green);
+    margin-bottom: 5px;
     text-align: center;
-    margin-bottom: 10px;
+    font-weight: 700;
 }
-
 .subtitle {
-    text-align: center;
     color: #88968e;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
+    font-size: 1rem;
+}
+.menu-options {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: var(--primary-green);
-}
-
-h3 {
-    margin: 20px 0 10px 0;
-    color: var(--text-color);
-}
-
-/* 表单与选项 */
+/* 表单组件 */
 .form-group {
+    width: 100%;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+.form-group label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1ded6;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: #fafdfb;
+    transition: all 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(118, 160, 132, 0.15);
+}
+.info-text {
+    font-size: 0.85rem;
+    color: var(--danger-color);
+    margin: 5px 0 15px 0;
+    font-weight: bold;
+}
+
+/* 统一按钮系统 */
+.btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-primary { background: var(--primary-green); color: white; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-success { background: #2e7d32; color: white; }
+.btn-success:hover { background: #1b5e20; }
+.btn-secondary { background: #e2e8f0; color: #475569; }
+.btn-secondary:hover { background: #cbd5e1; }
+.btn-warning { background: var(--warning-color); color: white; }
+.btn-warning:hover { background: #ec971f; }
+
+.btn-group {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+/* 游戏头部面板 */
+.game-header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-    background: var(--bg-color);
-    padding: 12px 15px;
-    border-radius: 10px;
-}
-
-.form-group label {
-    font-weight: 500;
+    font-weight: bold;
+    color: #64748b;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #e2e8f0;
     font-size: 0.95rem;
 }
 
-.form-group input, .form-group select {
-    width: 120px;
-    padding: 6px 10px;
-    border: 1px solid var(--primary-green);
-    border-radius: 6px;
-    outline: none;
-    text-align: center;
-    font-size: 1rem;
-}
-
-.info-text {
-    font-size: 0.85rem;
-    color: #88968e;
-    text-align: center;
-    margin: 10px 0;
-}
-
-/* 按钮样式 */
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: 600;
-    text-align: center;
-}
-
-.btn-primary { background-color: var(--primary-green); color: white; }
-.btn-primary:hover { background-color: var(--primary-hover); }
-
-.btn-secondary { background-color: #cbd5e1; color: #475569; }
-.btn-secondary:hover { background-color: #94a3b8; }
-
-.btn-success { background-color: #4ade80; color: #064e3b; }
-.btn-success:hover { background-color: #22c55e; }
-
-.btn-warning { background-color: var(--warning-color); color: white; width: 100%; }
-
-.menu-options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.btn-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-.btn-group .btn { flex: 1; }
-
-/* 游戏运行中界面 */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    color: #66756c;
-    margin-bottom: 20px;
-    border-bottom: 1px dashed var(--primary-green);
-    padding-bottom: 10px;
-}
-
+/* 核心题目显示区域 */
 #display-area {
-    min-height: 180px;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 25px 0;
+    min-height: 80px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    font-size: 2.8rem;
-    font-weight: bold;
+    justify-content: center;
+    text-align: center;
     color: var(--text-color);
-    margin-bottom: 20px;
+    word-break: break-all;
+    width: 100%;
 }
 
-/* 直式排列样式 */
+/* 加减直式排版 */
 .column-layout {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     font-family: monospace;
+    font-size: 3rem;
     padding-right: 20px;
 }
 .column-row {
-    line-height: 1.4;
+    width: 100%;
+    text-align: right;
+    line-height: 1.2;
 }
 .column-row.last {
-    border-bottom: 3px solid var(--text-color);
+    border-bottom: 4px solid var(--text-color);
     padding-bottom: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
+/* 游戏输入交互区 */
 #input-area {
+    width: 100%;
     display: flex;
     gap: 10px;
+    margin-bottom: 15px;
 }
-
 #user-answer {
     flex: 1;
     padding: 12px;
-    border: 2px solid var(--primary-green);
-    border-radius: 10px;
-    font-size: 1.2rem;
-    outline: none;
+    font-size: 1.4rem;
     text-align: center;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    font-weight: bold;
+}
+#user-answer:focus {
+    outline: none;
+    border-color: var(--primary-green);
 }
 
-/* 结算板 */
+/* 结算看板系统 */
 .score-board {
-    background: var(--bg-color);
+    width: 100%;
+    background: #f8fafc;
+    border-radius: 14px;
     padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    margin: 15px 0;
+    border: 1px solid #e2e8f0;
 }
 .score-board p {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    font-size: 1.05rem;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
 }
+.score-board p:last-child { margin-bottom: 0; }
 .text-success { color: #16a34a; font-weight: bold; }
-.text-danger { color: var(--danger-color); font-weight: bold; }
+.text-danger { color: #dc2626; font-weight: bold; }
 
+/* 错题呈现模块 */
+#wrong-answers-section {
+    width: 100%;
+    margin-top: 15px;
+}
 #wrong-list {
     max-height: 150px;
     overflow-y: auto;
@@ -298,11 +311,39 @@ h3 {
     100% { opacity: 0.4; }
 }
 
+/* ================= 针对移动端极致缩小的全屏优化样式 ================= */
+
+/* 音量条修改：改为悬浮于最顶端的极简横条，100% 避免遮挡 */
+#volume-controller {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 6px 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-bottom: 1px solid #76a084;
+    z-index: 999;
+    font-size: 0.85rem;
+}
+.vol-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+#bgm-volume {
+    width: 100px;
+    height: 6px;
+}
+
+/* 深度优化的屏幕数字键盘网格 */
 #screen-keyboard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 20px;
+    gap: 8px; /* 进一步缩小间距 */
+    margin-top: 10px;
     width: 100%;
 }
 
@@ -310,30 +351,73 @@ h3 {
     background-color: var(--card-bg);
     border: 1px solid var(--light-green);
     color: var(--text-color);
-    padding: 15px 0;
-    font-size: 1.5rem;
+    padding: 10px 0; /* 压缩垂直内边距，大幅缩小按键尺寸 */
+    font-size: 1.25rem; /* 略微减小字号保证美观 */
     font-weight: bold;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(118, 160, 132, 0.08);
+    box-shadow: 0 2px 6px rgba(118, 160, 132, 0.05);
     transition: all 0.1s ease;
-    -webkit-user-select: none; 
+    -webkit-user-select: none;
     user-select: none;
 }
 
 .key-btn:active {
     background-color: var(--light-green);
-    transform: scale(0.95);
+    transform: scale(0.96);
 }
 
-
-.key-btn[data-val="backspace"] {
-    background-color: #f1f5f9;
+/* 特殊按键的视觉区别 */
+.key-btn[data-val="clear"], .key-btn[data-val="backspace"] {
+    background-color: #f8fafc;
     color: #64748b;
+    font-size: 1.1rem;
 }
 
+/* 核心更改：居中完美的 Enter 提交键样式 */
+.key-btn.btn-enter {
+    background-color: var(--primary-green) !important;
+    color: white !important;
+    font-size: 1.1rem;
+}
+.key-btn.btn-enter:active {
+    background-color: var(--primary-hover) !important;
+}
 
-@media (min-width: 768px) {
-    #screen-keyboard { display: none; }
-    #user-answer { pointer-events: auto; }
+/* 媒体查询：当屏幕宽度在移动端范畴内（≤ 768px）时，强制限制页面元素大小，彻底避免超出视口 */
+@media (max-width: 768px) {
+    body {
+        padding-top: 45px; /* 为吸顶音量条预留安全距离 */
+    }
+    .container {
+        padding: 5px;
+    }
+    .card {
+        padding: 15px 15px; /* 缩减卡片留白 */
+        border-radius: 14px;
+    }
+    #display-area {
+        font-size: 2.4rem; /* 减小字体，防止大数字换行撑开容器 */
+        margin: 15px 0;
+        min-height: 60px;
+    }
+    .column-layout {
+        font-size: 2.4rem;
+    }
+    /* 移动端下隐藏输入框右侧的多余电脑确认按钮 */
+    #submit-btn {
+        display: none !important;
+    }
+}
+
+/* 电脑端宽屏（＞ 768px）自适应恢复 */
+@media (min-width: 769px) {
+    #volume-controller {
+        position: fixed; top: 20px; left: 20px; right: auto;
+        width: auto; padding: 15px 20px; border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(118, 160, 132, 0.2);
+    }
+    .vol-row { flex-direction: row; }
+    #bgm-volume { width: 130px; height: 8px; }
+    #screen-keyboard { display: none !important; } /* 电脑端隐藏虚拟键盘 */
 }
